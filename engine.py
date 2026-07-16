@@ -158,7 +158,32 @@ class PlaywrightMapsEngine:
                                     break
                     except Exception:
                         continue
-                        
+                
+                # Try to extract website if missing
+                if not lead.get('Website URL'):
+                    website_locators = [
+                        'a[data-item-id="authority"]',
+                        'a[aria-label^="Website:"]',
+                        'a[data-tooltip="Open website"]'
+                    ]
+                    for selector in website_locators:
+                        try:
+                            el = page.locator(selector).first
+                            if await el.count() > 0:
+                                val = await el.get_attribute('href')
+                                if val and 'google.com/url' not in val:
+                                    lead['Website URL'] = val
+                                    break
+                                elif val and 'google.com/url' in val:
+                                    # Sometimes google wraps the url in a redirect
+                                    parsed = urllib.parse.urlparse(val)
+                                    qs = urllib.parse.parse_qs(parsed.query)
+                                    if 'q' in qs:
+                                        lead['Website URL'] = qs['q'][0]
+                                        break
+                        except Exception:
+                            continue
+                            
             except Exception as e:
                 self.log(f"⚠️ Enrichment failed for {name}: {str(e)}")
             finally:
