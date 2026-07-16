@@ -1,0 +1,26 @@
+# Secrets and Environment Variables
+.env
+secrets.json
+
+# Virtual Environments
+.venv/
+venv/
+env/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Temporary & Test Files
+test_log.txt
+*.log
+
+# Generated outputs (so you don't accidentally upload downloaded lead lists)
+*.csv
+*.xlsx
+
+# OS generated files
+.DS_Store
+Thumbs.db

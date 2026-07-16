@@ -1,0 +1,12 @@
+streamlit
+pandas
+aiohttp
+beautifulsoup4
+openpyxl
+dnspython
+fuzzywuzzy
+duckduckgo-search
+selenium
+webdriver-manager
+playwright
+playwright-stealth
