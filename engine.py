@@ -262,7 +262,7 @@ class PlaywrightMapsEngine:
                     while yielded_count < self.lead_limit and scroll_attempts < 50:
                         await self._jitter(page)
                         
-                        items_data = await page.evaluate('''() => {
+                        items_data = await page.evaluate(r'''() => {
                             let results = [];
                             let items = document.querySelectorAll('div[role="feed"] > div > div:has(a[href*="/maps/place/"])');
                             for (let item of items) {
