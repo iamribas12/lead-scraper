@@ -1,6 +1,10 @@
 import streamlit as st
 import asyncio
 import pandas as pd
+import os
+
+# Automatically install playwright browsers when running on cloud platforms like Streamlit Cloud
+os.system("playwright install chromium")
 import re
 from engine import PlaywrightMapsEngine
 
