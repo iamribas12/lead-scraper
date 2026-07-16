@@ -259,6 +259,8 @@ class PlaywrightMapsEngine:
                 
                 async with aiohttp.ClientSession() as session:
                     scroll_attempts = 0
+                    empty_scrolls = 0
+                    last_yielded = 0
                     while yielded_count < self.lead_limit and scroll_attempts < 50:
                         await self._jitter(page)
                         
@@ -336,6 +338,19 @@ class PlaywrightMapsEngine:
                             task = asyncio.create_task(self.enrich_and_save(data, session, context))
                             active_tasks.append(task)
                             yielded_count += 1
+                            
+                        if yielded_count == last_yielded:
+                            empty_scrolls += 1
+                            if empty_scrolls >= 3:
+                                self.log("⚠️ Google Maps stopped returning results (Datacenter IP block or end of list).")
+                                try:
+                                    await page.screenshot(path="debug_cloud.png")
+                                except Exception:
+                                    pass
+                                break
+                        else:
+                            empty_scrolls = 0
+                            last_yielded = yielded_count
 
                         if yielded_count >= self.lead_limit:
                             break

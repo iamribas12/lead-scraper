@@ -136,6 +136,16 @@ with st.container():
             import traceback
             st.error(f"Execution Error: {e}")
             st.code(traceback.format_exc(), language="python")
+            
+        finally:
+            import os
+            if os.path.exists("debug_cloud.png"):
+                st.warning("⚠️ Google Maps stopped returning results. Here is what the Cloud Bot saw (Google often blocks cloud servers with Captchas):")
+                st.image("debug_cloud.png", use_column_width=True)
+                try:
+                    os.remove("debug_cloud.png")
+                except Exception:
+                    pass
 
     from streamlit.runtime.scriptrunner import get_script_run_ctx
 
